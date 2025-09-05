@@ -10,10 +10,8 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-connectDB(process.env.MONGO_URI || 'mongodb://localhost:27017/lead_db');
+connectDB(process.env.MONGO_URI || 'mongodb://localhost:27017/lead');
 
 app.use('/api/leads', leadsRouter);
-
-app.get('/', (req, res) => res.send('Lead API running'));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -7,7 +7,7 @@ export const createLead = (data) => API.post('/leads', data);
 
 
 export default function LeadForm({ onAdded }) {
-  const [form, setForm] = useState({ name:'', email:'', phone:'', source:'', status:'New' });
+  const [form, setForm] = useState({ name:'', email:'', phone:'', source:'' });
   const [errors, setErrors] = useState({});
 
   const validate = () => {
@@ -25,7 +25,7 @@ export default function LeadForm({ onAdded }) {
     if (!validate()) return;
     try {
       const res = await createLead(form);
-      setForm({ name:'', email:'', phone:'', source:'', status:'New' });
+  setForm({ name:'', email:'', phone:'', source:'' });
       onAdded && onAdded(res.data);
     } catch (error) {
       console.error(error);
@@ -68,27 +68,15 @@ export default function LeadForm({ onAdded }) {
                 }`}
               >
                 <option value="">Select source</option>
-                <option>Website</option>
+                <option>Youtube</option>
                 <option>Referral</option>
-                <option>Ad</option>
+                <option>Social Media</option>
                 <option>Other</option>
               </select>
               {errors.source && <p className="text-red-500 mt-1 text-sm">{errors.source}</p>}
             </div>
 
-            <div>
-              <label htmlFor="status" className="block mb-2 text-gray-300 font-semibold">Status</label>
-              <select
-                id="status"
-                value={form.status}
-                onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="w-full rounded-xl bg-transparent border border-gray-700 px-4 py-3 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
-              >
-                <option>New</option>
-                <option>Contacted</option>
-                <option>Qualified</option>
-              </select>
-            </div>
+            {/* Status field removed */}
 
             <button
               type="submit"

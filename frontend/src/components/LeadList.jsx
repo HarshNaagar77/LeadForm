@@ -4,18 +4,17 @@ import axios from 'axios';
 const API = axios.create({ baseURL: 'http://localhost:5000/api' });
 
 export const getLeads = (params) => API.get('/leads', { params });
-export const updateLead = (id, data) => API.put(`/leads/${id}`, data);
 export const deleteLead = (id) => API.delete(`/leads/${id}`);
 
 export default function LeadList() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [q, setQ] = useState('');
+  const [d, setD] = useState('');
 
   const fetch = async () => {
     try {
       setLoading(true);
-      const res = await getLeads({ q });
+      const res = await getLeads({ d });
       setLeads(res.data.data || res.data);
     } catch (error) {
       console.error(error);
@@ -34,10 +33,7 @@ export default function LeadList() {
     setLeads(leads.filter(l => l._id !== id));
   };
 
-  const changeStatus = async (id, status) => {
-    const res = await updateLead(id, { status });
-    setLeads(leads.map(l => (l._id === id ? res.data : l)));
-  };
+  // Status change logic removed
 
   if (loading) return <div className="p-6 rounded-xl bg-gray-900 text-center text-cyan-400 shadow">Loading...</div>;
 
@@ -46,8 +42,8 @@ export default function LeadList() {
       <div className="flex gap-3 mb-5">
         <input
           placeholder="Search name/email/phone"
-          value={q}
-          onChange={e => setQ(e.target.value)}
+          value={d}
+          onChange={e => setD(e.target.value)}
           className="flex-grow rounded-xl border border-gray-700 bg-transparent px-4 py-3 text-gray-300 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
         />
         <button
@@ -64,7 +60,7 @@ export default function LeadList() {
             <th className="p-4 text-left font-semibold">Email</th>
             <th className="p-4 text-left font-semibold">Phone</th>
             <th className="p-4 text-left font-semibold">Source</th>
-            <th className="p-4 text-left font-semibold">Status</th>
+            {/* Status column removed */}
             <th className="p-4 text-left font-semibold">Actions</th>
           </tr>
         </thead>
@@ -82,17 +78,7 @@ export default function LeadList() {
               <td className="p-4">{lead.email}</td>
               <td className="p-4">{lead.phone}</td>
               <td className="p-4">{lead.source}</td>
-              <td className="p-4">
-                <select
-                  value={lead.status}
-                  onChange={e => changeStatus(lead._id, e.target.value)}
-                  className="rounded-xl bg-transparent border border-gray-700 text-gray-300 px-3 py-1 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
-                >
-                  <option>New</option>
-                  <option>Contacted</option>
-                  <option>Qualified</option>
-                </select>
-              </td>
+              {/* Status select removed */}
               <td className="p-4">
                 <button
                   onClick={() => remove(lead._id)}

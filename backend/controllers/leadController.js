@@ -1,9 +1,9 @@
 const Lead = require('../models/Lead');
 
-exports.createLead = async (req, res) => {
+const createLead = async (req, res) => {
   try {
-    const { name, email, phone, source, status } = req.body;
-    const lead = new Lead({ name, email, phone, source, status });
+  const { name, email, phone, source } = req.body;
+  const lead = new Lead({ name, email, phone, source });
     await lead.save();
     res.status(201).json(lead);
   } catch (err) {
@@ -11,7 +11,7 @@ exports.createLead = async (req, res) => {
   }
 };
 
-exports.getLeads = async (req, res) => {
+const getLeads = async (req, res) => {
   try {
     const { page = 1, limit = 50, q } = req.query;
     const filter = {};
@@ -30,7 +30,7 @@ exports.getLeads = async (req, res) => {
   }
 };
 
-exports.getLead = async (req, res) => {
+const getLead = async (req, res) => {
   try {
     const lead = await Lead.findById(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Lead not found' });
@@ -40,17 +40,9 @@ exports.getLead = async (req, res) => {
   }
 };
 
-exports.updateLead = async (req, res) => {
-  try {
-    const lead = await Lead.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!lead) return res.status(404).json({ message: 'Lead not found' });
-    res.json(lead);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
 
-exports.deleteLead = async (req, res) => {
+
+const deleteLead = async (req, res) => {
   try {
     const lead = await Lead.findByIdAndDelete(req.params.id);
     if (!lead) return res.status(404).json({ message: 'Lead not found' });
@@ -58,4 +50,11 @@ exports.deleteLead = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+};
+
+module.exports = {
+  createLead,
+  getLeads,
+  getLead,
+  deleteLead
 };

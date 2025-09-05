@@ -5,7 +5,6 @@ const LeadSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phone: { type: String, required: true },
   source: { type: String, required: true },
-  status: { type: String, enum: ['New','Contacted','Qualified'], default: 'New' },
   createdAt: { type: Date, default: Date.now }
 });
 
